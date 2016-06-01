@@ -14,5 +14,6 @@ loadData <- function (tablename) {
   mydb <-  dbConnect(MySQL(), user=props$user, password=props$password, dbname=props$dbname, host=props$host)
   rs <-  dbSendQuery(mydb, query)
   data <-  fetch(rs,n=-1)
-  return(data)
+  dbDisconnect(mydb)
+  data
 }
