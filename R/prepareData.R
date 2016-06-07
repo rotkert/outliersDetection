@@ -1,7 +1,13 @@
+library(clusterSim)
+
 #' @export
 prepareData <- function(rawData) {
   data <- list()
-  data$instances <- rawData[, -1]
+  unnormalizedData <- rawData[, -1]
+  zerSDColumns <- getZeroSD(unnormalizedData)
+  if (length(zerSDColumns) > 0)
+    unnormalizedData <- subset(unnormalizedData, select=-c(zerSDColumns))
+  data$instances <- data.Normalization(unnormalizedData, type='n1', normalization = 'column')
   data$timestamps <- rawData[, 1]
   data
 }
