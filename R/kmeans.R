@@ -4,7 +4,7 @@ library(cluster)
 plotSilWidth <- function(instances, klimit) {
   silWidth <- array(1:klimit)
   for (i in 2:klimit)
-    silWidth[i] <- pam(instances, i)$silinfo$avg.width
+    silWidth[i] <- clara(instances, i)$silinfo$avg.width
 
   plot(1:klimit, silWidth, type="b", xlab="Number of Clusters", ylab="Avg sil width")
 }

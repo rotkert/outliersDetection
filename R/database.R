@@ -21,7 +21,7 @@ loadData <- function (tablename) {
 #' @export
 loadAttributesDict <- function() {
   props <- read.properties(file = 'mow.properties', encoding='UTF-8')
-  query <- "select concat('val', id), name from attribute_dict order by id"
+  query <- "select concat('val_', id), name from attribute_dict order by id"
   mydb <-  dbConnect(MySQL(), user=props$user, password=props$password, dbname=props$dbname, host=props$host)
   rs <-  dbSendQuery(mydb, query)
   attributeDict <-  fetch(rs,n=-1)

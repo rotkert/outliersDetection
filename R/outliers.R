@@ -30,8 +30,9 @@ outliers <- function(tablename, detectorFunction) {
   outliers$instances <- data$instances[result$value, ]
   outliers$timestamps <- data$timestamps[result$value]
   outliers$time <- result$time
+  outliers$callDetails <- result$callDetails
   outliers$boundVector <- getOutlierBound(data$instances)
-  outliers$perAttribute <- countColumnOutliers(outliers$instances, outliers$boundVector)
+  outliers$perColumn <- countColumnOutliers(outliers$instances, outliers$boundVector)
   outliers$perInstance <- countRowOutliers(outliers$instances, outliers$boundVector)
   outliers
 }
