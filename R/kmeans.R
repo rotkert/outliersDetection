@@ -1,18 +1,20 @@
 library(cluster)
 
 #' @export
-plotSilWidth <- function(instances, klimit) {
+plotSilWidth <- function(instances, metric, klimit) {
   silWidth <- array(1:klimit)
   for (i in 2:klimit)
-    silWidth[i] <- clara(instances, i)$silinfo$avg.width
+    silWidth[i] <- clara(instances, i, metric = metric)$silinfo$avg.width
 
   plot(1:klimit, silWidth, type="b", xlab="Number of Clusters", ylab="Avg sil width")
 }
 
 #' @export
-kmeansOutliersIndexes <- function(instances, k, silLimit) {
-  model <- pam(instances, k)
+kmedoidsOutliersIndexes <- function(instances, k, metric, silLimit) {
+  result <- list()
+  result$params <- paste('k: ', k, 'silLimit: ', silLimit, sep='')
+  model <- pam(instances, k, metric = metric)
   silInfo <- silhouette(model, full=TRUE)
-  outliersIndexes <- which(silInfo[, 3] < silLimit)
-  outliersIndexes
+  result$outliersIndexes <- which(silInfo[, 3] < silLimit)
+  result
 }

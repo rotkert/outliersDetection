@@ -1,22 +1,19 @@
-#' @export
-svmOutliers <- function(tablename) {
-  outliersFunction <- function(instances) svmOutliersIndexes(instances)
-  timestampOutliers <- outliers(tablename,outliersFunction)
-  timestampOutliers
-}
 
-#'@export
-testKmeans <- function(tablename, klimit) {
-  rawData <- loadData(tablename)
-  data <- prepareData(rawData)
-  plotSilWidth(data$instances, klimit)
-}
 
 #' @export
-kmeansOutliers <- function(tablename, k, silLimit) {
-  outliersFunction <- function(instances) kmeansOutliersIndexes(instances, k, silLimit)
-  timestampOutliers <- outliers(tablename,outliersFunction)
-  timestampOutliers
+svmOutliers <- function(tablename, kernel, nu, gamma) {
+  outliersFunction <- function(instances) svmOutliersIndexes(instances, kernel, nu, gamma)
+  outliers <- outliers(tablename,outliersFunction)
+  outliers
+}
+
+
+
+#' @export
+kmedoidsOutliers <- function(tablename, k, metric, silLimit) {
+  outliersFunction <- function(instances) kmedoidsOutliersIndexes(instances, k, metric, silLimit)
+  outliers <- outliers(tablename,outliersFunction)
+  outliers
 }
 
 #' @export
@@ -27,10 +24,12 @@ outliers <- function(tablename, detectorFunction) {
 
   outliers <-list()
   outliers$tablename <- tablename
-  outliers$instances <- data$instances[result$value, ]
-  outliers$timestamps <- data$timestamps[result$value]
+  outliers$numAttributes <- ncol(data$instances)
+  outliers$numInstances <- nrow(data$instances)
+  outliers$instances <- data$instances[result$outliersIndexes, ]
+  outliers$timestamps <- data$timestamps[result$outliersIndexes]
   outliers$time <- result$time
-  outliers$callDetails <- result$callDetails
+  outliers$params <- result$params
   outliers$boundVector <- getOutlierBound(data$instances)
   outliers$perColumn <- countColumnOutliers(outliers$instances, outliers$boundVector)
   outliers$perInstance <- countRowOutliers(outliers$instances, outliers$boundVector)

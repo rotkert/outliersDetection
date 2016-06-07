@@ -9,7 +9,9 @@ execWithTimeMeasusre <- function(functionToExec) {
   result <- list()
 
   start.time <- Sys.time()
-  result$value <- functionToExec()
+  value <- functionToExec()
+  result$outliersIndexes <- value$outliersIndexes
+  result$params <- value$params
   end.time <- Sys.time()
 
   result$time <- end.time - start.time

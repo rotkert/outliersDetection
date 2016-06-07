@@ -8,15 +8,15 @@ analyze <- function(o, dirName) {
   dir.create(dirPath)
 
   instanceOutliers <- o$perInstance
-  instancesWithOutlies <- countInsstanceOutliers(instanceOutliers)
-  values <- c(o$tablename, o$time, instancesWithOutlies)
-  names <- c('table name', 'execution time', 'Percent of instances with stat outliers')
+  instancesWithOutliers <- countInsstanceOutliers(instanceOutliers)
+  values <- c(o$tablename, o$numAttributes, o$numInstances, nrow(o$instances), o$time, instancesWithOutliers, o$params)
+  names <- c('table name', 'number of attributes','number of all instances','number of outliers', 'execution time', 'Percent of instances with stat outliers', 'params')
   generalInfo <- data.frame(names, values)
   write.xlsx(generalInfo, filePath, 'generalInfo', row.names = FALSE, col.names = FALSE, append = TRUE)
   write.xlsx(instanceOutliers, filePath, 'instanceOutliers', append = TRUE)
 
   timestamps <- data.frame(o$timestamps)
-  saveTimestampChart(o$timestamps, dirPath)
+  saveTimestampChart(o$timestamps, instanceOutliers, dirPath)
   write.xlsx(timestamps, filePath, 'timestamps', row.names = FALSE, append = TRUE)
 
   attributesOutliers <- getAttributesOutliers(o$instances, o$perColumn)
@@ -45,11 +45,9 @@ saveAttributeOutliersChart <- function(ao, dirPath) {
   plotly_IMAGE(p, format = "png", out_file = filePath)
 }
 
-saveTimestampChart <- function(timestamps, dirPath) {
+saveTimestampChart <- function(timestamps, instancesOutliers, dirPath) {
   filePath = paste(dirPath, '\\timestamps.png', sep='')
   dates <- timestampToDate(timestamps)
-  oneVector <- c(1)
-  dullVector <- rep(oneVector, length(dates))
-  pl <- plot_ly(x=dates, y=dullVector, mode="markers")
+  pl <- plot_ly(x=dates, y=instancesOutliers, mode="markers")
   plotly_IMAGE(pl, format = "png", out_file = filePath)
 }
