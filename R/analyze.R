@@ -1,6 +1,19 @@
 library(xlsx)
 library(plotly)
 
+#' Analyze outliers
+#'
+#' This functions allows to prepare summary of outliers detection algorithms.
+#' It creates directory containing .xlsx file with details of algorithm execution and output.
+#' It also creates two charts:
+#' \itemize{
+#'  \item presenting, for each attribute, number of instances in which this attribute exceeded vaue \emph{quantile3 + 1.5 * IQR}
+#'  \item presenting, in time period, nubmer of attributes which exceeded value  of 'upper inner fence' \emph{quantile3 + 1.5 * IQR}
+#' }
+#' @param o outliers object returned by \link[mow]{svmOutliers} or \link[mow]{kmedoidsOutliers}
+#' @param dirName directory in which data should be saved
+#' @return None
+#'
 #' @export
 analyze <- function(o, dirName) {
   dirPath = paste('results\\', dirName, sep='')

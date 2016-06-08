@@ -1,19 +1,16 @@
 library(plyr)
 library(reshape2)
 
-#' @export
 countColumnOutliers <- function(outInstances, boundVector) {
   columnOutliers <- sapply(1:ncol(outInstances), function(i) columnOutliersInt(i, outInstances, boundVector))
   columnOutliers
 }
-
 
 columnOutliersInt <-function(i, outInstances, boundVector) {
   x <- outInstances[,i]
   length(x[x>boundVector[i]])
 }
 
-#' @export
 countRowOutliers <- function(outInstances, boundVector) {
   rowOutliers <- apply(outInstances, 1, function(x) rowOutliersInt(x, boundVector))
   rowOutliers
@@ -28,7 +25,6 @@ rowOutliersInt <- function(row, boundVector) {
   outliersAmount
 }
 
-#' @export
 getOutlierBound <- function(instances, iqrCoefficient = 1.5) {
   meltedInsatnces <- melt(instances)
   statsValues <- ddply(meltedInsatnces, c("variable"), summarise, quantile3=quantile(value)[3], IQR = IQR(value))

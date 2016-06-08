@@ -1,13 +1,6 @@
 library(RMySQL)
 library(properties)
 
-#' Load data from database function
-#'
-#' This function allows to read data from database
-#' @param tablename Name of the table in database
-#' @keywords database
-#' @return data frame object
-#' @export
 loadData <- function (tablename) {
   props <- read.properties(file = 'mow.properties', encoding='UTF-8')
   query <- paste('select * from', tablename, 'order by timestamp', sep=' ')
@@ -18,7 +11,6 @@ loadData <- function (tablename) {
   data
 }
 
-#' @export
 loadAttributesDict <- function() {
   props <- read.properties(file = 'mow.properties', encoding='UTF-8')
   query <- "select concat('val_', id), name from attribute_dict order by id"

@@ -1,6 +1,5 @@
 library(e1071)
 
-#' @export
 svmOutliersIndexes <- function(instances, kernel, nu, gamma) {
   result <- list()
   result$params <- paste('kernel: ', kernel, 'nu: ', nu, 'gamma: ', gamma, sep=' ')

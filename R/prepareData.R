@@ -1,6 +1,5 @@
 library(clusterSim)
 
-#' @export
 prepareData <- function(rawData) {
   data <- list()
   unnormalizedData <- rawData[, -1]

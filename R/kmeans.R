@@ -1,6 +1,5 @@
 library(cluster)
 
-#' @export
 plotSilWidth <- function(instances, metric, klimit) {
   silWidth <- array(1:klimit)
   for (i in 2:klimit)
@@ -9,7 +8,6 @@ plotSilWidth <- function(instances, metric, klimit) {
   plot(1:klimit, silWidth, type="b", xlab="Number of Clusters", ylab="Avg sil width")
 }
 
-#' @export
 kmedoidsOutliersIndexes <- function(instances, k, metric, silLimit) {
   result <- list()
   result$params <- paste('k: ', k, 'silLimit: ', silLimit, sep='')
